@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Devrant Filter
 // @namespace    https://devrant.com/
-// @version      0.1
+// @version      0.3
 // @description  a filter for devrant comments and rants
 // @author       7twin
 // @match        https://devrant.com/rants/*
@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 $(window).load(function(){
-    var filter_arr = [""]; // Add blacklisted (case-sensitive) nicknames here
+    var filter_arr = []; // Add blacklisted (case-sensitive) nicknames here, e.g. ["SomeBodyElse", "NickName18"]
     var compiled_regex = new RegExp('<div class="rant-username">('+ filter_arr.join("|") +')<\/div>', 'g');
 
     if(window.location.href == "https://devrant.com/feed/"){
@@ -38,8 +38,11 @@ $(window).load(function(){
         // filter notifications
         setInterval(function(){
             $.map(filter_arr,function(n){
+                // remove based on notification message
                 $(":contains('"+n+"')").closest("li").remove();
-                $("a[href*='"+n+"']").closest("li").remove();
+
+                // remove based on avatar parent link
+                $("a[href='/users/"+n+"']").closest("li").remove();
             });
         },10);
     }
