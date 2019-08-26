@@ -39,6 +39,7 @@ $(window).load(function(){
         setInterval(function(){
             $.map(filter_arr,function(n){
                 $(":contains('"+n+"')").closest("li").remove();
+                $("a[href*='"+n+"']").closest("li").remove();
             });
         },10);
     }
